@@ -12,7 +12,7 @@ boxplot <- function(data, payment = "Average Medicare Payments") {
    ggplot(aes(x = data[["DRG Definition"]],
               y = data[[payment]])) +
    geom_boxplot(fill = "lightblue",
-                color = "black") +
+                color = "white") +
    theme_minimal() +
    theme(axis.text.x = element_text(angle = 90,
                                     hjust = 1,
