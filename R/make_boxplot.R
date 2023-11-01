@@ -1,4 +1,4 @@
-boxplot <- function(data, payment_type = "Average Medicare Payments") {
+make_boxplot <- function(data, payment_type = "Average Medicare Payments") {
   if (!payment_type %in% c("Average Medicare Payments", "Average Total Payments", "Average Covered Charges")) {
     stop("Invalid payment type")
   }
