@@ -1,15 +1,26 @@
+#' @importFrom dplyr summarise
+#' @importFrom dplyr pull
 #' @importFrom dplyr %>%
 #' @export
-statistics <- function(data, type) {
-  if (type != 'mean' && type != 'median' && type != 'sd') {
-    stop("Invalid type. Choose from 'mean', 'sd', or 'median'.")
+statistics <- function(data, statistic = "mean") {
+  # Check if the input statistic is valid
+  if (!(statistic %in% c("mean", "median", "sd"))) {
+    stop("Invalid statistic. Please choose 'mean', 'median', or 'sd'.")
   }
   
-  info <- data %>%
-    group_by(DRG.Definition) %>%
-    summarise(
-      summary_value = get(type)(Average.Medicare.Payments, na.rm = TRUE)
-    )
+  # Define the calculations for each statistic
+  calculations <- list(
+    mean = function(x) mean(x, na.rm = TRUE),
+    median = function(x) median(x, na.rm = TRUE),
+    sd = function(x) sd(x, na.rm = TRUE)
+  )
   
-  return(info)
+  # Calculate the specified statistic for Average Medicare Payments
+  result <- data %>%
+    summarise(
+      summary_value = calculations[[statistic]](`Average Medicare Payments`)
+    ) %>%
+    pull(summary_value)
+  
+  return(result)
 }
