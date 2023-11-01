@@ -1,12 +1,13 @@
-statistics <- function(data, type){
-  medicare <- data$'Average Medicare Payments'
-  if (type == "mean") {
-    return(mean(medicare, na.rm = TRUE))
-  } else if (type == "sd") {
-    return(sd(medicare, na.rm = TRUE))
-  } else if (type == "median") {
-    return(median(medicare, na.rm = TRUE))
-  } else {
+statistics <- function(data, type) {
+  if (type != 'mean' && type != 'median' && type != 'sd') {
     stop("Invalid type. Choose from 'mean', 'sd', or 'median'.")
   }
+  
+  info <- data %>%
+    group_by(DRG.Definition) %>%
+    summarise(
+      summary_value = get(stat_type)(Average.Medicare.Payments, na.rm = TRUE)
+    )
+  
+  return(info)
 }
